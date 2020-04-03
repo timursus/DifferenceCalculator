@@ -12,3 +12,10 @@ test('comparison of flat JSON files', () => {
   const emptyPath = getFixturePath('empty.json');
   expect(genDiff(emptyPath, afterPath)).toBe('{\n  + timeout: 20\n  + verbose: true\n  + host: hexlet.io\n}');
 });
+
+test('comparison of flat YAML files', () => {
+  const expectedOutput = '{\n    node: true\n  + extends: plugin:jest/recommended\n  - extends: airbnb-base\n  + jest: true\n  + parser: babel-eslint\n  - ecmaVersion: 2018\n}';
+  const bgPath = getFixturePath('bg.yml');
+  const gdPath = getFixturePath('gd.yml');
+  expect(genDiff(bgPath, gdPath)).toBe(expectedOutput);
+});

@@ -12,3 +12,6 @@ Compares two configuration files and shows a difference.
 
 ### Comparison of flat YAML files
 [![asciicast-yml](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs.svg)](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs)
+
+### Comparison of flat INI files
+[![asciicast-ini](https://asciinema.org/a/1vtja9tkgbbHYrFjuFeRjfWeW.svg)](https://asciinema.org/a/1vtja9tkgbbHYrFjuFeRjfWeW)

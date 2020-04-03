@@ -9,3 +9,6 @@ Compares two configuration files and shows a difference.
 
 ### Comparison of flat JSON files
 [![asciicast-json](https://asciinema.org/a/8vPHoeU9p3wzkcNLU4mi2qeQQ.svg)](https://asciinema.org/a/8vPHoeU9p3wzkcNLU4mi2qeQQ)
+
+### Comparison of flat YAML files
+[![asciicast-yml](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs.svg)](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs)

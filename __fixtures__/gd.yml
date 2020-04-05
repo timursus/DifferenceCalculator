@@ -1,7 +1,0 @@
-node: true
-
-jest: true
-
-extends: plugin:jest/recommended
-
-parser: babel-eslint

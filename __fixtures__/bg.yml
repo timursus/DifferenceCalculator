@@ -1,5 +1,0 @@
-node: true
-
-extends: airbnb-base
-
-ecmaVersion: 2018

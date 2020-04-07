@@ -13,18 +13,18 @@ const expected = [
   '      + setting3: {',
   '            key: value',
   '        }',
-  '        setting6: {',
-  '            key: value',
-  '          + ops: vops',
-  '        }',
   '      + setting4: blah blah',
   '      + setting5: {',
   '            key5: value5',
   '        }',
+  '        setting6: {',
+  '            key: value',
+  '          + ops: vops',
+  '        }',
   '    }',
   '    group1: {',
-  '      + baz: bars',
   '      - baz: bas',
+  '      + baz: bars',
   '        foo: bar',
   '      - nest: {',
   '            key: value',
@@ -33,6 +33,9 @@ const expected = [
   '    }',
   '  - group2: {',
   '        abc: 12345',
+  '        def: {',
+  '            key: value',
+  '        }',
   '    }',
   '  + group3: {',
   '        fee: 100500',
@@ -47,5 +50,5 @@ test.each([
 ])('Comparsion of files %p %p', (configA, configB, expectedOutput) => {
   const pathA = getFixturePath(configA);
   const pathB = getFixturePath(configB);
-  expect(genDiff(pathA, pathB)).toBe(expectedOutput);
+  expect(genDiff(pathA, pathB, 'json')).toBe(expectedOutput);
 });

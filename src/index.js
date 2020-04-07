@@ -1,29 +1,35 @@
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
-import parse from './parsers.js';
+import parse from './parsers';
+import renderer from './formatters';
 
-const getDifference = (config1, config2) => {
-  const [keys1, keys2] = [Object.keys(config1), Object.keys(config2)];
+const getDifference = (dataBefore, dataAfter) => {
+  const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
+  return keys.sort().map((key) => {
+    const [valueOld, valueNew] = [dataBefore[key], dataAfter[key]];
 
-  const commonKeys = _.intersection(keys1, keys2);
-  const unchanged = commonKeys
-    .filter((key) => config1[key] === config2[key])
-    .map((key) => `    ${key}: ${config1[key]}`);
-  const changed = commonKeys
-    .filter((key) => config1[key] !== config2[key])
-    .map((key) => `  + ${key}: ${config2[key]}\n  - ${key}: ${config1[key]}`);
+    if (!_.has(dataBefore, key) || !_.has(dataAfter, key)) {
+      return {
+        key, valueOld, valueNew, status: _.has(dataAfter, key) ? 'added' : 'deleted',
+      };
+    }
 
-  const added = _.difference(keys2, keys1).map((key) => `  + ${key}: ${config2[key]}`);
-  const deleted = _.difference(keys1, keys2).map((key) => `  - ${key}: ${config1[key]}`);
+    if (_.isPlainObject(valueOld) && _.isPlainObject(valueNew)) {
+      return { key, children: getDifference(valueOld, valueNew) };
+    }
 
-  return `{\n${unchanged.concat(changed, added, deleted).join('\n')}\n}`;
+    return {
+      key, valueOld, valueNew, status: (valueOld === valueNew) ? 'unchanged' : 'changed',
+    };
+  });
 };
 
-export default (pathToFile1, pathToFile2) => {
+export default (pathToFile1, pathToFile2, format) => {
   const data1 = fs.readFileSync(pathToFile1, 'utf8');
   const data2 = fs.readFileSync(pathToFile2, 'utf8');
   const extension = path.extname(pathToFile1);
   const [parsedData1, parsedData2] = [parse(data1, extension), parse(data2, extension)];
-  return getDifference(parsedData1, parsedData2);
+  const diff = getDifference(parsedData1, parsedData2);
+  return renderer(diff, format);
 };

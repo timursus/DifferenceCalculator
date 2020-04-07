@@ -1,6 +1,6 @@
 import path from 'path';
 import { readFileSync } from 'fs';
-import buildDiffTree from '../src/index.js';
+import mainFlow from '../src/index.js';
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
@@ -14,8 +14,20 @@ test.each([
   ['before.json', 'after.json', 'json', jsonOutput],
   ['before.yml', 'after.yml', 'pretty', prettyOutput],
   ['before.ini', 'after.ini', 'pretty', prettyOutput],
-])('Comparsion of files %p & %p, output format: %s', (configA, configB, format, expected) => {
+])('Comparsion %p & %p, output format: %s', (configA, configB, format, expected) => {
   const pathA = getFixturePath(configA);
   const pathB = getFixturePath(configB);
-  expect(buildDiffTree(pathA, pathB, format)).toBe(expected);
+
+  expect(mainFlow(pathA, pathB, format)).toBe(expected);
+});
+
+test('Throws on incorrect input', () => {
+  const txtPath = getFixturePath('json.txt');
+  const pathA = getFixturePath('before.yml');
+  const pathB = getFixturePath('after.yml');
+  const runWithTxtFiles = () => mainFlow(txtPath, txtPath, 'json');
+  const runWithJsFormat = () => mainFlow(pathA, pathB, 'js');
+
+  expect(runWithTxtFiles).toThrowError('extension');
+  expect(runWithJsFormat).toThrowError('format');
 });

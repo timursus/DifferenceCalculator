@@ -11,5 +11,5 @@ export default (diff, format) => {
   if (format === 'json') {
     return JSON.stringify(diff);
   }
-  return null; // error: unsupported output format!
+  throw new Error(`Unsupported output format: '${format}'`);
 };

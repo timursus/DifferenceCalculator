@@ -10,7 +10,7 @@ const transform = (value) => {
 };
 
 const renderer = (diff, path = '') => {
-  const strings = diff
+  const plainStrings = diff
     .filter(({ status }) => status !== 'unchanged')
     .map(({
       key, valueOld, valueNew, status, children,
@@ -28,10 +28,10 @@ const renderer = (diff, path = '') => {
         case 'deleted':
           return `${beginning} deleted`;
         default:
-          return null;
+          throw new Error(`Unknown node status: '${status}'`);
       }
     });
-  return strings.join('\n');
+  return plainStrings.join('\n');
 };
 
 export default renderer;

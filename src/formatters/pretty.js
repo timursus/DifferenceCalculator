@@ -12,7 +12,7 @@ const stringify = (data, depth) => {
 
 const renderer = (diff, depth = 0) => {
   const indent = generateIndent(depth);
-  const strings = diff.map(({
+  const prettyStrings = diff.map(({
     key, valueOld, valueNew, status, children,
   }) => {
     if (children) {
@@ -32,10 +32,10 @@ const renderer = (diff, depth = 0) => {
       case 'deleted':
         return `${indent}  - ${key}: ${strValueOld}`;
       default:
-        return null;
+        throw new Error(`Unknown node status: '${status}'`);
     }
   });
-  return `{\n${strings.join('\n')}\n${indent}}`;
+  return `{\n${prettyStrings.join('\n')}\n${indent}}`;
 };
 
 export default renderer;

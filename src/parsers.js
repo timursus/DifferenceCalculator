@@ -11,5 +11,5 @@ export default (data, extension) => {
   if (extension === '.ini') {
     return ini.parse(data);
   }
-  return null; // error: unsupported file extension!
+  throw new Error(`Unsupported file extension: '${extension}'`);
 };

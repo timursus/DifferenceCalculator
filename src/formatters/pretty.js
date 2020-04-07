@@ -1,15 +1,17 @@
 import { isPlainObject } from 'lodash';
 
+const generateIndent = (depth) => '    '.repeat(depth);
+
 const stringify = (data, depth) => {
   if (!isPlainObject(data)) return data;
-  const indent = '    '.repeat(depth);
-  const entries = Object.entries(data);
-  const str = entries.map(([key, value]) => `${indent}    ${key}: ${stringify(value, depth + 1)}`);
+  const indent = generateIndent(depth);
+  const str = Object.entries(data)
+    .map(([key, value]) => `${indent}    ${key}: ${stringify(value, depth + 1)}`);
   return `{\n${str.join('\n')}\n${indent}}`;
 };
 
 const renderer = (diff, depth = 0) => {
-  const indent = '    '.repeat(depth);
+  const indent = generateIndent(depth);
   const strings = diff.map(({
     key, valueOld, valueNew, status, children,
   }) => {

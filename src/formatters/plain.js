@@ -1,4 +1,4 @@
-const transformer = (value) => {
+const transform = (value) => {
   switch (typeof value) {
     case 'object':
       return '[complex value]';
@@ -22,9 +22,9 @@ const renderer = (diff, path = '') => {
       const beginning = `Property '${path}${key}' was`;
       switch (status) {
         case 'changed':
-          return `${beginning} changed from ${transformer(valueOld)} to ${transformer(valueNew)}`;
+          return `${beginning} changed from ${transform(valueOld)} to ${transform(valueNew)}`;
         case 'added':
-          return `${beginning} added with value: ${transformer(valueNew)}`;
+          return `${beginning} added with value: ${transform(valueNew)}`;
         case 'deleted':
           return `${beginning} deleted`;
         default:

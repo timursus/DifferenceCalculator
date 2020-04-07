@@ -3,7 +3,20 @@ import genDiff from '../src/index.js';
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-const expected = [
+const plainOutput = [
+  "Property 'common.follow' was added with value: false",
+  "Property 'common.setting2' was deleted",
+  "Property 'common.setting3' was changed from true to [complex value]",
+  "Property 'common.setting4' was added with value: 'blah blah'",
+  "Property 'common.setting5' was added with value: [complex value]",
+  "Property 'common.setting6.ops' was added with value: 'vops'",
+  "Property 'group1.baz' was changed from 'bas' to bars",
+  "Property 'group1.nest' was changed from [complex value] to 'str'",
+  "Property 'group2' was deleted",
+  "Property 'group3' was added with value: [complex value]",
+].join('\n');
+
+const jsonOutput = [
   '{',
   '    common: {',
   '      + follow: false',
@@ -44,11 +57,14 @@ const expected = [
 ].join('\n');
 
 test.each([
-  ['before.json', 'after.json', expected],
-  ['before.yml', 'after.yml', expected],
-  ['before.ini', 'after.ini', expected],
-])('Comparsion of files %p %p', (configA, configB, expectedOutput) => {
+  ['before.json', 'after.json', 'json', jsonOutput],
+  ['before.json', 'after.json', 'plain', plainOutput],
+  ['before.yml', 'after.yml', 'json', jsonOutput],
+  ['before.yml', 'after.yml', 'plain', plainOutput],
+  ['before.ini', 'after.ini', 'json', jsonOutput],
+  ['before.ini', 'after.ini', 'plain', plainOutput],
+])('Comparsion of files %p & %p, output format: %s', (configA, configB, format, expected) => {
   const pathA = getFixturePath(configA);
   const pathB = getFixturePath(configB);
-  expect(genDiff(pathA, pathB, 'json')).toBe(expectedOutput);
+  expect(genDiff(pathA, pathB, format)).toBe(expected);
 });

@@ -23,11 +23,14 @@ test.each([
 
 test('Throws on incorrect input', () => {
   const txtPath = getFixturePath('json.txt');
-  const pathA = getFixturePath('before.yml');
-  const pathB = getFixturePath('after.yml');
+  const path1yml = getFixturePath('before.yml');
+  const path2yml = getFixturePath('after.yml');
+  const path3ini = getFixturePath('after.ini');
   const runWithTxtFiles = () => mainFlow(txtPath, txtPath, 'json');
-  const runWithJsFormat = () => mainFlow(pathA, pathB, 'js');
+  const runWithJsFormat = () => mainFlow(path1yml, path2yml, 'js');
+  const runWithDifExt = () => mainFlow(path1yml, path3ini, 'plain');
 
   expect(runWithTxtFiles).toThrowError('extension');
   expect(runWithJsFormat).toThrowError('format');
+  expect(runWithDifExt).toThrowError('different extensions');
 });

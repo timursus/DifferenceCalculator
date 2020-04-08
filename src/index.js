@@ -26,10 +26,13 @@ const buildDiffTree = (dataBefore, dataAfter) => {
 };
 
 export default (pathToFile1, pathToFile2, format) => {
+  const [extension1, extension2] = [path.extname(pathToFile1), path.extname(pathToFile2)];
+  if (extension1 !== extension2) {
+    throw new Error(`Incorrect comparison of files with different extensions: '${extension1}', '${extension2}'`);
+  }
   const data1 = fs.readFileSync(pathToFile1, 'utf8');
   const data2 = fs.readFileSync(pathToFile2, 'utf8');
-  const extension = path.extname(pathToFile1);
-  const [parsedData1, parsedData2] = [parse(data1, extension), parse(data2, extension)];
+  const [parsedData1, parsedData2] = [parse(data1, extension1), parse(data2, extension2)];
   const diff = buildDiffTree(parsedData1, parsedData2);
   return renderer(diff, format);
 };

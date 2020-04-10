@@ -9,14 +9,14 @@ const transform = (value) => {
   }
 };
 
-const renderer = (diff, path = '') => {
+const render = (diff, path = '') => {
   const plainStrings = diff
     .filter(({ status }) => status !== 'unchanged')
     .map(({
       key, valueOld, valueNew, status, children,
     }) => {
       if (children) {
-        return renderer(children, `${path}${key}.`);
+        return render(children, `${path}${key}.`);
       }
 
       const beginning = `Property '${path}${key}' was`;
@@ -34,4 +34,4 @@ const renderer = (diff, path = '') => {
   return plainStrings.join('\n');
 };
 
-export default renderer;
+export default render;

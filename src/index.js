@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import parse from './parsers';
-import renderer from './formatters';
+import render from './formatters';
 
 const buildDiffTree = (dataBefore, dataAfter) => {
   const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
@@ -34,5 +34,5 @@ export default (pathToFile1, pathToFile2, format) => {
   const data2 = fs.readFileSync(pathToFile2, 'utf8');
   const [parsedData1, parsedData2] = [parse(data1, extension1), parse(data2, extension2)];
   const diff = buildDiffTree(parsedData1, parsedData2);
-  return renderer(diff, format);
+  return render(diff, format);
 };

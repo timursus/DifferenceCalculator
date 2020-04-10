@@ -3,20 +3,22 @@ import { isPlainObject } from 'lodash';
 const generateIndent = (depth) => '    '.repeat(depth);
 
 const stringify = (data, depth) => {
-  if (!isPlainObject(data)) return data;
+  if (!isPlainObject(data)) {
+    return data;
+  }
   const indent = generateIndent(depth);
   const str = Object.entries(data)
     .map(([key, value]) => `${indent}    ${key}: ${stringify(value, depth + 1)}`);
   return `{\n${str.join('\n')}\n${indent}}`;
 };
 
-const renderer = (diff, depth = 0) => {
+const render = (diff, depth = 0) => {
   const indent = generateIndent(depth);
   const prettyStrings = diff.map(({
     key, valueOld, valueNew, status, children,
   }) => {
     if (children) {
-      return `${indent}    ${key}: ${renderer(children, depth + 1)}`;
+      return `${indent}    ${key}: ${render(children, depth + 1)}`;
     }
 
     const strValueOld = stringify(valueOld, depth + 1);
@@ -38,4 +40,4 @@ const renderer = (diff, depth = 0) => {
   return `{\n${prettyStrings.join('\n')}\n${indent}}`;
 };
 
-export default renderer;
+export default render;

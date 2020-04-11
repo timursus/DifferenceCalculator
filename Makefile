@@ -1,18 +1,18 @@
 install:
-		npm ci
+	npm ci
 
 build:
-		rm -rf dist
-		npm run build
+	rm -rf dist
+	npm run build
 
 lint:
-		npx eslint .
+	npx eslint .
 
 test:
-		npm test
+	npm test
 
 test-coverage:
-		npm test -- --coverage
+	npm test -- --coverage
 
 publish:
-		npm publish --dry-run
+	npm publish --dry-run

@@ -36,7 +36,7 @@ test('Throws on incorrect input', () => {
   const runWithJsFormat = () => mainFlow(path1yml, path2yml, 'js');
   const runWithDifExt = () => mainFlow(path1yml, path3ini, 'plain');
 
-  expect(runWithTxtFiles).toThrowError('extension');
+  expect(runWithTxtFiles).toThrowError('data type');
   expect(runWithJsFormat).toThrowError('format');
   expect(runWithDifExt).toThrowError('different extensions');
 });

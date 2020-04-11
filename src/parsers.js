@@ -1,15 +1,15 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (data, extension) => {
-  if (extension === '.json') {
+export default (data, type) => {
+  if (type === 'json') {
     return JSON.parse(data);
   }
-  if (extension === '.yml' || extension === '.yaml') {
+  if (type === 'yml' || type === 'yaml') {
     return yaml.safeLoad(data);
   }
-  if (extension === '.ini') {
+  if (type === 'ini') {
     return ini.parse(data);
   }
-  throw new Error(`Unsupported file extension: '${extension}'`);
+  throw new Error(`Unsupported data type: '${type}'`);
 };

@@ -15,16 +15,12 @@ const stringify = (data, depth) => {
 const render = (diff, depth = 0) => {
   const indent = generateIndent(depth);
   const prettyStrings = diff.map(({
-    key, valueOld, valueNew, status, children,
+    key, valueOld, valueNew, type, children,
   }) => {
-    if (children) {
-      return `${indent}    ${key}: ${render(children, depth + 1)}`;
-    }
-
     const strValueOld = stringify(valueOld, depth + 1);
     const strValueNew = stringify(valueNew, depth + 1);
 
-    switch (status) {
+    switch (type) {
       case 'unchanged':
         return `${indent}    ${key}: ${strValueOld}`;
       case 'changed':
@@ -33,8 +29,10 @@ const render = (diff, depth = 0) => {
         return `${indent}  + ${key}: ${strValueNew}`;
       case 'deleted':
         return `${indent}  - ${key}: ${strValueOld}`;
+      case 'nested':
+        return `${indent}    ${key}: ${render(children, depth + 1)}`;
       default:
-        throw new Error(`Unknown node status: '${status}'`);
+        throw new Error(`Unknown node type: '${type}'`);
     }
   });
   return `{\n${prettyStrings.join('\n')}\n${indent}}`;

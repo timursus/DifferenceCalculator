@@ -11,24 +11,22 @@ const transform = (value) => {
 
 const render = (diff, path = '') => {
   const plainStrings = diff
-    .filter(({ status }) => status !== 'unchanged')
+    .filter(({ type }) => type !== 'unchanged')
     .map(({
-      key, valueOld, valueNew, status, children,
+      key, valueOld, valueNew, type, children,
     }) => {
-      if (children) {
-        return render(children, `${path}${key}.`);
-      }
-
-      const beginning = `Property '${path}${key}' was`;
-      switch (status) {
+      const beginning = `Property '${path}${key}' was ${type}`;
+      switch (type) {
         case 'changed':
-          return `${beginning} changed from ${transform(valueOld)} to ${transform(valueNew)}`;
+          return `${beginning} from ${transform(valueOld)} to ${transform(valueNew)}`;
         case 'added':
-          return `${beginning} added with value: ${transform(valueNew)}`;
+          return `${beginning} with value: ${transform(valueNew)}`;
         case 'deleted':
-          return `${beginning} deleted`;
+          return `${beginning}`;
+        case 'nested':
+          return render(children, `${path}${key}.`);
         default:
-          throw new Error(`Unknown node status: '${status}'`);
+          throw new Error(`Unknown node type: '${type}'`);
       }
     });
   return plainStrings.join('\n');

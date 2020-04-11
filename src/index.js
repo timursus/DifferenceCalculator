@@ -12,17 +12,21 @@ const buildDiffTree = (dataBefore, dataAfter) => {
 
     if (!_.has(dataBefore, key) || !_.has(dataAfter, key)) {
       return {
-        key, valueOld, valueNew, status: _.has(dataAfter, key) ? 'added' : 'deleted',
+        key, type: _.has(dataAfter, key) ? 'added' : 'deleted', valueOld, valueNew,
       };
     }
 
     if (_.isPlainObject(valueOld) && _.isPlainObject(valueNew)) {
-      return { key, children: buildDiffTree(valueOld, valueNew) };
+      return {
+        key, type: 'nested', children: buildDiffTree(valueOld, valueNew),
+      };
     }
 
-    return {
-      key, valueOld, valueNew, status: (valueOld === valueNew) ? 'unchanged' : 'changed',
-    };
+    return valueOld === valueNew
+      ? { key, type: 'unchanged', valueOld }
+      : {
+        key, type: 'changed', valueOld, valueNew,
+      };
   });
 };
 

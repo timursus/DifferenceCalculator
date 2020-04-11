@@ -10,10 +10,11 @@ const buildDiffTree = (dataBefore, dataAfter) => {
     const valueOld = dataBefore[key];
     const valueNew = dataAfter[key];
 
-    if (!_.has(dataBefore, key) || !_.has(dataAfter, key)) {
-      return {
-        key, type: _.has(dataAfter, key) ? 'added' : 'deleted', valueOld, valueNew,
-      };
+    if (!_.has(dataBefore, key)) {
+      return { key, type: 'added', value: valueNew };
+    }
+    if (!_.has(dataAfter, key)) {
+      return { key, type: 'deleted', value: valueOld };
     }
 
     if (_.isPlainObject(valueOld) && _.isPlainObject(valueNew)) {
@@ -23,9 +24,9 @@ const buildDiffTree = (dataBefore, dataAfter) => {
     }
 
     return valueOld === valueNew
-      ? { key, type: 'unchanged', valueOld }
+      ? { key, type: 'unchanged', value: valueOld }
       : {
-        key, type: 'changed', valueOld, valueNew,
+        key, type: 'changed', value: valueNew, valueOld,
       };
   });
 };

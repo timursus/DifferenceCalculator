@@ -15,20 +15,19 @@ const stringify = (data, depth) => {
 const render = (diff, depth = 0) => {
   const indent = generateIndent(depth);
   const prettyStrings = diff.map(({
-    key, valueOld, valueNew, type, children,
+    key, type, value, valueOld, children,
   }) => {
-    const strValueOld = stringify(valueOld, depth + 1);
-    const strValueNew = stringify(valueNew, depth + 1);
+    const strValue = stringify(value, depth + 1);
 
     switch (type) {
       case 'unchanged':
-        return `${indent}    ${key}: ${strValueOld}`;
+        return `${indent}    ${key}: ${strValue}`;
       case 'changed':
-        return `${indent}  - ${key}: ${strValueOld}\n${indent}  + ${key}: ${strValueNew}`;
+        return `${indent}  - ${key}: ${stringify(valueOld, depth + 1)}\n${indent}  + ${key}: ${strValue}`;
       case 'added':
-        return `${indent}  + ${key}: ${strValueNew}`;
+        return `${indent}  + ${key}: ${strValue}`;
       case 'deleted':
-        return `${indent}  - ${key}: ${strValueOld}`;
+        return `${indent}  - ${key}: ${strValue}`;
       case 'nested':
         return `${indent}    ${key}: ${render(children, depth + 1)}`;
       default:

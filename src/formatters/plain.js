@@ -13,14 +13,14 @@ const render = (diff, path = '') => {
   const plainStrings = diff
     .filter(({ type }) => type !== 'unchanged')
     .map(({
-      key, valueOld, valueNew, type, children,
+      key, type, value, valueOld, children,
     }) => {
       const beginning = `Property '${path}${key}' was ${type}`;
       switch (type) {
         case 'changed':
-          return `${beginning} from ${transform(valueOld)} to ${transform(valueNew)}`;
+          return `${beginning} from ${transform(valueOld)} to ${transform(value)}`;
         case 'added':
-          return `${beginning} with value: ${transform(valueNew)}`;
+          return `${beginning} with value: ${transform(value)}`;
         case 'deleted':
           return `${beginning}`;
         case 'nested':

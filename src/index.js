@@ -32,18 +32,14 @@ const buildDiffTree = (dataBefore, dataAfter) => {
 };
 
 export default (pathToFile1, pathToFile2, format) => {
-  const extension1 = path.extname(pathToFile1);
-  const extension2 = path.extname(pathToFile2);
-  if (extension1 !== extension2) {
-    throw new Error(`Incorrect arguments! The files have different extensions: '${extension1}', '${extension2}'`);
-  }
-  const dataType = extension1.slice(1);
-
   const data1 = fs.readFileSync(pathToFile1, 'utf8');
-  const parsedData1 = parse(data1, dataType);
-
   const data2 = fs.readFileSync(pathToFile2, 'utf8');
-  const parsedData2 = parse(data2, dataType);
+
+  const dataType1 = path.extname(pathToFile1).slice(1);
+  const dataType2 = path.extname(pathToFile2).slice(1);
+
+  const parsedData1 = parse(data1, dataType1);
+  const parsedData2 = parse(data2, dataType2);
 
   const diff = buildDiffTree(parsedData1, parsedData2);
   return render(diff, format);

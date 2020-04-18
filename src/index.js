@@ -6,7 +6,8 @@ import render from './formatters';
 
 const buildDiffTree = (dataBefore, dataAfter) => {
   const keys = _.union(Object.keys(dataBefore), Object.keys(dataAfter));
-  return keys.sort().map((key) => {
+
+  return keys.map((key) => {
     const valueOld = dataBefore[key];
     const valueNew = dataAfter[key];
 
@@ -16,18 +17,17 @@ const buildDiffTree = (dataBefore, dataAfter) => {
     if (!_.has(dataAfter, key)) {
       return { key, type: 'deleted', value: valueOld };
     }
-
+    if (_.isEqual(valueOld, valueNew)) {
+      return { key, type: 'unchanged', value: valueOld };
+    }
     if (_.isPlainObject(valueOld) && _.isPlainObject(valueNew)) {
       return {
         key, type: 'nested', children: buildDiffTree(valueOld, valueNew),
       };
     }
-
-    return valueOld === valueNew
-      ? { key, type: 'unchanged', value: valueOld }
-      : {
-        key, type: 'changed', value: valueNew, valueOld,
-      };
+    return {
+      key, type: 'changed', value: valueNew, valueOld,
+    };
   });
 };
 

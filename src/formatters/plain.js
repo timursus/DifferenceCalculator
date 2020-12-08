@@ -1,4 +1,4 @@
-const transform = (value) => {
+const stringify = (value) => {
   switch (typeof value) {
     case 'object':
       return '[complex value]';
@@ -9,8 +9,8 @@ const transform = (value) => {
   }
 };
 
-const render = (diff, path = '') => {
-  const plainLines = diff
+const render = (diff, path) => {
+  const lines = diff
     .filter(({ type }) => type !== 'unchanged')
     .map(({
       key, type, value, valueOld, children,
@@ -18,9 +18,9 @@ const render = (diff, path = '') => {
       const beginning = `Property '${path}${key}' was ${type}`;
       switch (type) {
         case 'changed':
-          return `${beginning} from ${transform(valueOld)} to ${transform(value)}`;
+          return `${beginning} from ${stringify(valueOld)} to ${stringify(value)}`;
         case 'added':
-          return `${beginning} with value: ${transform(value)}`;
+          return `${beginning} with value: ${stringify(value)}`;
         case 'deleted':
           return `${beginning}`;
         case 'nested':
@@ -29,7 +29,7 @@ const render = (diff, path = '') => {
           throw new Error(`Unknown node type: '${type}'`);
       }
     });
-  return plainLines.join('\n');
+  return lines.join('\n');
 };
 
-export default render;
+export default (diff) => render(diff, '');

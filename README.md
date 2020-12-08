@@ -3,22 +3,41 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/477e5fd164b0049a52d6/maintainability)](https://codeclimate.com/github/timursus/frontend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/477e5fd164b0049a52d6/test_coverage)](https://codeclimate.com/github/timursus/frontend-project-lvl2/test_coverage)
 
-### JS training project for hexlet.io (lvl2)
-
 Compares two configuration files and shows a difference.
 
-Supports different formats: JSON, YAML, INI. 
-Generates a report in plain text, pretty, and json.
+ - Supports different data formats: JSON, YAML, INI.
 
-Examples of use:
-### Comparison of nested structures. Output to 3 formats.
+ - Shows a report in plain text, pretty, or json formats.
+
+ - Works as CLI utility or as node.js module.
+
+## Installation
+Make sure, that you have [node.js](https://nodejs.org/) v13+ installed first.
+```bash
+npm install -g @timursus/gendiff
+```
+
+## Usage
+```
+gendiff [options] <filepath1> <filepath2>
+
+Options:
+  -h, --help           display help for command
+  -V, --version        output the version number
+  -f, --format <type>  output format [pretty, plain, json] (default: "pretty")
+```
+
+## Demonstrations of use
+Comparison of nested structures. Output to 3 formats.
+
 [![asciicast-final](https://asciinema.org/a/LBogEXLNWASfkSZfP6MAB3kHO.svg)](https://asciinema.org/a/LBogEXLNWASfkSZfP6MAB3kHO)
 
-### Comparison of flat JSON files
-[![asciicast-json](https://asciinema.org/a/8vPHoeU9p3wzkcNLU4mi2qeQQ.svg)](https://asciinema.org/a/8vPHoeU9p3wzkcNLU4mi2qeQQ)
+### API
+**gendiff (filepath1, filepath2 [, outputFormat = 'json'])**
 
-### Comparison of flat YAML files
-[![asciicast-yml](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs.svg)](https://asciinema.org/a/vO6DoAQpOLDkDu54ENfDVeiRs)
+By default, `gendiff` returns a diff tree in json string
+``` javascript
+import gendiff from '@timursus/gendiff';
 
-### Comparison of flat INI files
-[![asciicast-ini](https://asciinema.org/a/1vtja9tkgbbHYrFjuFeRjfWeW.svg)](https://asciinema.org/a/1vtja9tkgbbHYrFjuFeRjfWeW)
+const diff = gendiff(filepath1, filepath2);
+```

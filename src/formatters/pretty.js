@@ -1,43 +1,41 @@
 import { isPlainObject } from 'lodash';
 
 const indentUnit = '    ';
-const generateIndent = (depth) => indentUnit.repeat(depth);
+const generateIndent = (depth) => `\n${indentUnit.repeat(depth)}`;
 
-const stringify = (data, depth) => {
-  if (!isPlainObject(data)) {
+const render = (diff, depth) => {
+  const stringify = (data) => {
+    if (isPlainObject(data)) {
+      const normalizedObj = Object.entries(data)
+        .map(([key, value]) => ({ type: 'unchanged', key, value }));
+      return render(normalizedObj, depth + 1);
+    }
     return data?.toString();
-  }
-  const indent = generateIndent(depth);
-  const lines = Object.entries(data)
-    .map(([key, value]) => `${indent}    ${key}: ${stringify(value, depth + 1)}`);
-  return `{\n${lines.join('\n')}\n${indent}}`;
-};
+  };
 
-const render = (diff, depth = 0) => {
   const indent = generateIndent(depth);
-  const prettyLines = diff.map(({
-    key, type, value, valueOld, children,
+
+  const lines = diff.map(({
+    type, key, value, valueOld, children,
   }) => {
-    const strValue = stringify(value, depth + 1);
+    const strValue = stringify(value);
 
     switch (type) {
       case 'unchanged':
-        return `${indent}    ${key}: ${strValue}`;
-      case 'changed': {
-        const strValueOld = stringify(valueOld, depth + 1);
-        return `${indent}  - ${key}: ${strValueOld}\n${indent}  + ${key}: ${strValue}`;
-      }
+        return `    ${key}: ${strValue}`;
+      case 'changed':
+        return `  - ${key}: ${stringify(valueOld)}${indent}  + ${key}: ${strValue}`;
       case 'added':
-        return `${indent}  + ${key}: ${strValue}`;
+        return `  + ${key}: ${strValue}`;
       case 'deleted':
-        return `${indent}  - ${key}: ${strValue}`;
+        return `  - ${key}: ${strValue}`;
       case 'nested':
-        return `${indent}    ${key}: ${render(children, depth + 1)}`;
+        return `    ${key}: ${render(children, depth + 1)}`;
       default:
         throw new Error(`Unknown node type: '${type}'`);
     }
   });
-  return `{\n${prettyLines.join('\n')}\n${indent}}`;
+  return `{${indent}${lines.join(indent)}${indent}}`;
 };
 
-export default render;
+export default (diff) => render(diff, 0);

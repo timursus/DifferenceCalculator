@@ -10,7 +10,7 @@ const transform = (value) => {
 };
 
 const render = (diff, path = '') => {
-  const plainStrings = diff
+  const plainLines = diff
     .filter(({ type }) => type !== 'unchanged')
     .map(({
       key, type, value, valueOld, children,
@@ -29,7 +29,7 @@ const render = (diff, path = '') => {
           throw new Error(`Unknown node type: '${type}'`);
       }
     });
-  return plainStrings.join('\n');
+  return plainLines.join('\n');
 };
 
 export default render;

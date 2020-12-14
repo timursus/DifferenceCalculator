@@ -1,8 +1,9 @@
+import { test, expect, beforeAll } from '@jest/globals';
 import path from 'path';
 import { readFileSync } from 'fs';
 import mainFlow from '../src/index.js';
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename) => path.resolve('__fixtures__', filename);
 
 let prettyOutput;
 let plainOutput;

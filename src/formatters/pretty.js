@@ -1,15 +1,15 @@
-import { isPlainObject } from 'lodash';
+import _ from 'lodash';
 
 const indentUnit = '    ';
 const generateIndent = (depth) => `\n${indentUnit.repeat(depth)}`;
 
 const stringify = (data, depth, render) => {
-  if (isPlainObject(data)) {
+  if (_.isPlainObject(data)) {
     const normalizedObj = Object.entries(data)
       .map(([key, value]) => ({ type: 'unchanged', key, value }));
     return render(normalizedObj, depth + 1);
   }
-  return data?.toString();
+  return data;
 };
 
 const render = (diff, depth) => {

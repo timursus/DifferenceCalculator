@@ -6,17 +6,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [13.x, 14.x]
+
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: '13.x'
+        node-version: ${{ matrix.node-version }}
 
-    - name: Install and build project
+    - name: Install project
       run: |
         make install
-        make build
 
     - name: Run linter
       run: make lint

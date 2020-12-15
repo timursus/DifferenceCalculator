@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import parse from './parsers';
-import buildDiff from './buildDiff';
-import render from './formatters';
+import parse from './parsers.js';
+import buildDiff from './buildDiff.js';
+import render from './formatters/index.js';
 
 const extractData = (filePath) => {
   const raw = fs.readFileSync(filePath, 'utf8');

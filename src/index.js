@@ -10,9 +10,9 @@ const extractData = (filePath) => {
   return parse(raw, dataType);
 };
 
-export default (pathToFile1, pathToFile2, outputFormat = 'json') => {
+export default (pathToFile1, pathToFile2, outputFormat = 'json', color = false) => {
   const data1 = extractData(pathToFile1);
   const data2 = extractData(pathToFile2);
   const diff = buildDiff(data1, data2);
-  return render(diff, outputFormat);
+  return render(diff, outputFormat, color);
 };

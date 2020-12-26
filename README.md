@@ -11,11 +11,11 @@ Compares two configuration files and shows a difference.
 
  - Works as CLI utility or as node.js module.
 
-## Installation
-Make sure, that you have [node.js](https://nodejs.org/) v13+ installed first.
+## Getting started
 ```bash
 npm install -g @timursus/gendiff
 ```
+> Requires [Node](https://nodejs.org/) v13+
 
 ## Usage
 ```
@@ -25,12 +25,12 @@ Options:
   -h, --help           display help for command
   -V, --version        output the version number
   -f, --format <type>  output format [pretty, plain, json] (default: "pretty")
+  --color              enable color highlighting for "pretty" or "plain" output
 ```
 
 ## Demonstrations of use
-Comparison of nested structures. Output to 3 formats.
-
-[![asciicast-final](https://asciinema.org/a/LBogEXLNWASfkSZfP6MAB3kHO.svg)](https://asciinema.org/a/LBogEXLNWASfkSZfP6MAB3kHO)
+Comparison of nested structures. Color output.
+[![asciicast_gendiff](https://asciinema.org/a/FOPjvaMJ5HAkFHHOmiwnIzHcc.svg)](https://asciinema.org/a/FOPjvaMJ5HAkFHHOmiwnIzHcc)
 
 ### API
 **gendiff (filepath1, filepath2 [, outputFormat = 'json'])**
